@@ -87,6 +87,17 @@ var composite = ee.Image.cat([
   vhDescending.select('VV').mean()
 ]).focal_median();
 
+var compositeAs = ee.Image.cat([
+  vhAscending.select('VH').mean(),
+  vhAscending.select('VV').mean()
+]).focal_median();
+var compositeClippedAs = compositeAs.clip(studyArea).multiply(10000).toInt();
+
+var compositeDes = ee.Image.cat([
+  vhDescending.select('VH').mean(),
+  vhDescending.select('VV').mean()
+]).focal_median();
+var compositeClippedDes = compositeDes.clip(studyArea).multiply(10000).toInt();
 
 // Clip composite image with our study area.
 var compositeClipped = composite.clip(studyArea);
@@ -120,8 +131,19 @@ print(compositeClipped);
 // Save the composite image as GeoTIFF.
 Export.image.toDrive(
   {
-    image: compositeClipped,
-    description: 'Sentinel'+year+month,
+    image: compositeClippedAs,
+    description: 'Sentinel_as_'+year+month,
+    scale: 10,
+    fileFormat: 'GeoTIFF',
+    maxPixels: 3784216672400,
+    region: studyArea
+  }
+);
+
+Export.image.toDrive(
+  {
+    image: compositeClippedDes,
+    description: 'Sentinel_des_'+year+month,
     scale: 10,
     fileFormat: 'GeoTIFF',
     maxPixels: 3784216672400,
