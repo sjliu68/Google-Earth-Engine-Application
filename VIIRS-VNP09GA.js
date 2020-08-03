@@ -35,10 +35,17 @@ Export.image.toDrive(
 
 //2
 // change latitude and longitude
+// kr
 var lon1 = 126.7
 var lon2 = 128.7
 var lat1 = 35.95
 var lat2 = 38.2
+// tw
+var lon1 = 120.2
+var lon2 = 121.54
+var lat1 = 22.58
+var lat2 = 25.1
+
 var region = ee.Geometry.Rectangle(lon1,lat1,lon2,lat2)
 
 var year = '2019'
