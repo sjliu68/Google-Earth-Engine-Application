@@ -17,12 +17,12 @@ print(collection) // this generates a JSON list of the images (and their metadat
 
 var medianpixels = collection.median() // This finds the median value of all the pixels which meet the criteria. 
 
-var medianpixelsclipped = medianpixels.clip(geometry).divide(10000) // this cuts up the result so that it fits neatly into your aoi
+var medianpixelsclipped = medianpixels.clip(geometry).toInt() // this cuts up the result so that it fits neatly into your aoi
                                                                   // and divides so that values between 0 and 1      
 
 
 // Now visualise the mosaic as a natural colour image. 
-Map.addLayer(medianpixelsclipped, {bands: ['B8', 'B4', 'B3'], min: 0, max: 1, gamma: 1.5}, 'Sentinel_2 mosaic')
+Map.addLayer(medianpixelsclipped, {bands: ['B8', 'B4', 'B3'], min: 0, max: 10000, gamma: 1.5}, 'Sentinel_2 mosaic')
 
 // export it to your googledrive as a tiff for use in QGIS
 // Export the image, specifying scale and region.
