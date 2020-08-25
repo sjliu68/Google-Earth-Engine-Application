@@ -1,10 +1,17 @@
 
-var geometry = ee.Geometry.Rectangle(113.0-0.01, 21.8-0.01, 114.4+0.01, 22.1+0.01);
+var year = 2000
+var year1 = year.toString()
+year = year+2
+var year2 = year.toString()
+
+var geometry = ee.Geometry.Rectangle(113.05-0.01, 21.8-0.01, 114.65+0.01, 23.0+0.01);
 
 // Load a raw Landsat 5 ImageCollection for a single year.
 var collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
-    .filterDate('1984-01-01', '1986-12-31')
+    .filterDate(year1+'-01-01', year2+'-12-31')
     .filterBounds(geometry);
+    
+print(collection)
 
 // Create a cloud-free composite with default parameters.
 var composite = ee.Algorithms.Landsat.simpleComposite(collection);
@@ -13,27 +20,27 @@ var composite = ee.Algorithms.Landsat.simpleComposite(collection);
 // cloud score threshold and percentile.
 var customComposite = ee.Algorithms.Landsat.simpleComposite({
   collection: collection,
-  percentile: 90,
+  percentile: 50,
   cloudScoreRange: 10,
   maxDepth: 1000,
   asFloat: true
 });
 
 //var customComposite = collection.median()
-var customComposite1 = collection.min()
+//var customComposite = collection.min()
 
-//var out = customComposite.clip(geometry).multiply(10000).toInt()
-var out = customComposite.clip(geometry)
+var out = customComposite.clip(geometry).multiply(10000).toInt()
+//var out = customComposite.clip(geometry)
 
 // Display the composites.
 Map.setCenter(113.8, 22.4, 9);
 //Map.addLayer(composite, {bands: ['B4', 'B3', 'B2'], max: 128}, 'TOA composite');
-Map.addLayer(out, {bands: ['B4', 'B3', 'B2'],  min: 0, max: 12800, gamma: 1.5},
+Map.addLayer(out, {bands: ['B4', 'B3', 'B2'],  min: 0, max: 10000, gamma: 1.5},
     'Custom TOA composite');
     
 Export.image.toDrive({
   image: out.select("B1","B2","B3","B4"),
-  description: 'landsat',
+  description: 'landsat_prd_'+year1,
   scale: 30,
   maxPixels: 1e13,
   region: geometry
