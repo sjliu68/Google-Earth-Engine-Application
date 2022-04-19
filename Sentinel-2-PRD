@@ -6,6 +6,7 @@
 //var geometry = ee.Geometry.Rectangle(113.7, 22.7, 114.7, 23.7); PRD
 //var geometry = ee.Geometry.Rectangle(-4.5,48.2,-3.9,48.5);
 var geometry = ee.Geometry.Rectangle(-119.0, 33.48, -117.2, 34.58); // Los Angeles
+var geometry = ee.Geometry.Rectangle(-119.2, 33.40, -117.2, 35.05); // Greater LA
 
 
 
