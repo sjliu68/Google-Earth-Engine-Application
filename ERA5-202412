@@ -1,0 +1,26 @@
+// Define the time range
+var startDate = '2023-01-01';
+var endDate = '2024-01-01';
+
+
+var geometry = ee.Geometry.Rectangle(113.5, 21.9, 114.5, 22.7) // HKG
+
+// Create a date range
+var dateRange = ee.DateRange(startDate, endDate);
+
+var era5Land = ee.ImageCollection('ECMWF/ERA5_LAND/DAILY_AGGR')
+  .filterBounds(geometry)
+  .filterDate(dateRange)
+  .select(['skin_temperature']);
+  
+print(era5Land)
+
+var bands = era5Land.toBands()
+print(bands)
+
+Export.image.toDrive({
+  image: bands,
+  description: 'HKG2023',
+  maxPixels: 1e13,
+  region: geometry
+});
