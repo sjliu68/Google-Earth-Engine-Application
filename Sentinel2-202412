@@ -1,4 +1,7 @@
 var geometry = ee.Geometry.Rectangle(-1, 51, 0.5, 52);   // london
+var geometry = ee.Geometry.Rectangle(-1, 51, 0.5, 52) // london
+var geometry = ee.Geometry.Rectangle(113.7, 22.08, 114.5, 22.68)  // hong kong
+var geometry = ee.Geometry.Rectangle(-74.5, 40.36, -73.5, 41.16)  // nyc
 
 var collection = ee.ImageCollection('COPERNICUS/S2_HARMONIZED') // searches all sentinel 2 imagery pixels...
   .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", 10)) // ...filters on the metadata for pixels less than 10% cloud
