@@ -1,5 +1,7 @@
-var geometry = ee.Geometry.Rectangle(-1, 51, 0.5, 52)  // london
-
+var geometry = ee.Geometry.Rectangle(-1, 51, 0.5, 52) // london
+var geometry = ee.Geometry.Rectangle(113.7, 22.08, 114.5, 22.68)  // hong kong
+var geometry = ee.Geometry.Rectangle(-74.5, 40.36, -73.5, 41.16)  // nyc
+ 
 
 // Import the dataset and select the elevation band.
 var dataset = ee.Image('NASA/NASADEM_HGT/001');
@@ -23,7 +25,8 @@ Map.setCenter(17.93, 7.71, 2);
 
 Export.image.toDrive({
   image: elevation,
-  description: 'DEM_LDN',
+  description: 'dem_nyc',
   maxPixels: 1e13,
+  scale: 30,
   region: geometry
 });
