@@ -3,7 +3,8 @@ var startDate = '2022-11-01';
 var endDate = '2022-12-01';
 
 // -103, -60, 20, 55
-var geometry = ee.Geometry.Rectangle(-103, 20, -60, 60) // US
+var geometry = ee.Geometry.Rectangle(-103, 20, -60, 60) // US East
+var geometry = ee.Geometry.Rectangle(-130, 20, -100, 60) // US East
 
 // Create a date range
 var dateRange = ee.DateRange(startDate, endDate);
