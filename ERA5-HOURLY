@@ -1,30 +1,33 @@
-// Define the time range
-var startDate = '2022-11-01';
-var endDate = '2022-12-01';
+// Define the year and month variables
+var year = 2023;
+var month = 4; // Change this to update the month (1 = January, 2 = February, etc.)
 
-// -103, -60, 20, 55
-var geometry = ee.Geometry.Rectangle(-103, 20, -60, 60) // US East
-var geometry = ee.Geometry.Rectangle(-130, 20, -100, 60) // US West
-var geometry = ee.Geometry.Rectangle(-130, 20, -60, 60) // US all
+// Compute start and end dates dynamically
+var startDate = ee.Date.fromYMD(year, month, 1);
+var endDate = startDate.advance(1, 'month'); // Automatically gets the next month's start
+
+// Define the geographic region (US)
+var geometry = ee.Geometry.Rectangle(-130, 20, -60, 60);
 
 // Create a date range
 var dateRange = ee.DateRange(startDate, endDate);
 
+// Load ERA5-Land data and filter
 var era5Land = ee.ImageCollection('ECMWF/ERA5_LAND/HOURLY')
   .filterBounds(geometry)
   .filterDate(dateRange)
   .select(['skin_temperature']);
-  //.select(['surface_net_solar_radiation']);
-  
-print(era5Land)
 
-var bands = era5Land.toBands()
-print(bands)
+print(era5Land);
 
+var bands = era5Land.toBands();
+print(bands);
+
+// Export to Google Drive
 Export.image.toDrive({
   image: bands,
-  description: 'USA202211',
+  description: 'USA' + year + ('0' + month).slice(-2), // Format: USA202301
   maxPixels: 1e13,
-  scale: 11132, 
+  scale: 11132,
   region: geometry
 });
