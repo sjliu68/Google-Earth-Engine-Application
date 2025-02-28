@@ -1,0 +1,33 @@
+// Define the bounding box (minLon, minLat, maxLon, maxLat)
+var region = ee.Geometry.Rectangle([-130, 20, -60, 60]); // Example: USA region
+
+// Define year and month for filtering
+var year = 2022;
+var month = 1; // Change this to get a different month's data
+
+// Define start and end dates for the selected month
+var start = ee.Date.fromYMD(year, month, 1);
+var end = start.advance(1, 'month');
+
+// Load MODIS MOD13A1.061 dataset and filter by date and region
+var dataset = ee.ImageCollection("MODIS/061/MOD13A1")
+               .select('EVI') // Select NDVI band
+               .filterDate(start, end)
+               .filterBounds(region)
+               .mean() // Get monthly average NDVI
+               .clip(region)
+               .set('month', month)
+               .set('year', year);
+
+// Display on the map
+Map.centerObject(region, 5);
+Map.addLayer(dataset, {min: 0, max: 8000, palette: ['blue', 'white', 'green']}, "NDVI for " + year + "-" + month);
+
+// Export to Google Drive
+Export.image.toDrive({
+  image: dataset,
+  description: 'MODIS_EVI_' + year + '_' + month,
+  scale: 1000,
+  region: region,
+  maxPixels: 1e13
+});
