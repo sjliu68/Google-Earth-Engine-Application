@@ -1,5 +1,5 @@
 // Define the bounding box (minLon, minLat, maxLon, maxLat)
-var region = ee.Geometry.Rectangle([-130, 20, -60, 60]); // Example: USA region
+var region = ee.Geometry.Rectangle([-135, 20, -55, 60]); // Example: USA region
 
 // Define year and month for filtering
 var year = 2022;
